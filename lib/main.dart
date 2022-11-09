@@ -39,7 +39,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CounterBloc>(
+    return BlocProvider(
       create: (context) => CounterBloc(),
       child: Scaffold(
         appBar: AppBar(
