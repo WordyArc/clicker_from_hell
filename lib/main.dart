@@ -39,66 +39,66 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return BlocProvider<CounterBloc>(
       create: (context) => CounterBloc(),
-      child: BlocBuilder<CounterBloc, int>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
+      child: Scaffold(
+        appBar: AppBar(
 
-              title: Text('Chainsaw clicker'),
-            ),
-            body: Center(
+          title: Text('Chainsaw clicker'),
+        ),
+        body: Center(
 
-              child: Column(
+          child: Column(
 
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'You have pushed the button this many times:',
-                  ),
-                  Text(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
+              ),
+              BlocBuilder<CounterBloc, int>(
+                builder: (context, state) {
+                  return Text(
                     state.toString(),
                     style: Theme
                         .of(context)
                         .textTheme
                         .headline4,
-                  ),
-                ],
-              ),
-            ),
-            floatingActionButton: BlocListener<CounterBloc, int>(
-              listener: (context, state) {
-                if (state == 10) {
-                  Scaffold.of(context).showBottomSheet(
-                          (context) => Container(
-                            color: Colors.orange,
-                            width: double.infinity,
-                            height: 100,
-                            child: const Center(
-                              child: Text(
-                                  'СПОЙЛЕР: Макима в конце.... ладно не буду',
-                                      style: TextStyle(
-                                        fontSize: 24
-                                      )
-                              ),
-                            ),
-                          )
                   );
-                }
-              },
-              child: FloatingActionButton(
-                onPressed: () {
-                  BlocProvider.of<CounterBloc>(context).add(
-                      CounterIncrementEvent());
                 },
-                tooltip: 'Increment',
-                child: const Icon(Icons.add),
               ),
-            ), // This trailing comma makes auto-formatting nicer for build methods.
-          );
-        },
+            ],
+          ),
+        ),
+        floatingActionButton: BlocListener<CounterBloc, int>(
+          listener: (context, state) {
+            if (state == 10) {
+              Scaffold.of(context).showBottomSheet(
+                      (context) =>
+                      Container(
+                        color: Colors.orange,
+                        width: double.infinity,
+                        height: 100,
+                        child: const Center(
+                          child: Text(
+                              'СПОЙЛЕР: Макима в конце.... ладно не буду',
+                              style: TextStyle(
+                                  fontSize: 24
+                              )
+                          ),
+                        ),
+                      )
+              );
+            }
+          },
+          child: FloatingActionButton(
+            onPressed: () {
+              BlocProvider.of<CounterBloc>(context).add(
+                  CounterIncrementEvent());
+            },
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
