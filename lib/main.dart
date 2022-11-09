@@ -2,6 +2,8 @@ import 'package:clicker_from_hell/counter/counter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'listener/listener_bloc.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -39,9 +41,17 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bloc = CounterBloc();
-    return BlocProvider(
-      create: (context) => bloc,
+    var counterBloc = CounterBloc();
+    var listenerBloc = ListenerBloc(counterBloc);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CounterBloc>(
+          create: (context) => counterBloc,
+        ),
+        BlocProvider<ListenerBloc>(
+          create: (context) => ListenerBloc(counterBloc),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
 
@@ -50,14 +60,13 @@ class MyHomePage extends StatelessWidget {
         body: Center(
 
           child: Column(
-
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
                 'You have pushed the button this many times:',
               ),
               BlocBuilder<CounterBloc, int>(
-                bloc: bloc,
+                bloc: counterBloc,
                 builder: (context, state) {
                   return Text(
                     state.toString(),
@@ -71,10 +80,10 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: BlocListener<CounterBloc, int>(
-          bloc: bloc,
+        floatingActionButton: BlocListener<ListenerBloc, int>(
+          bloc: listenerBloc,
           listener: (context, state) {
-            if (state == 10) {
+            if (state == 1) {
               Scaffold.of(context).showBottomSheet(
                       (context) =>
                       Container(
@@ -83,7 +92,7 @@ class MyHomePage extends StatelessWidget {
                         height: 100,
                         child: const Center(
                           child: Text(
-                              'СПОЙЛЕР: Макима в конце.... ладно не буду',
+                              'СПОЙЛЕР: Во 2 сезоне появится демон.... ладно не буду',
                               style: TextStyle(
                                   fontSize: 24
                               )
@@ -95,7 +104,7 @@ class MyHomePage extends StatelessWidget {
           },
           child: FloatingActionButton(
             onPressed: () {
-              bloc.add(
+              counterBloc.add(
                   CounterIncrementEvent());
             },
             tooltip: 'Increment',
