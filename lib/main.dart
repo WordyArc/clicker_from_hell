@@ -39,8 +39,9 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = CounterBloc();
     return BlocProvider(
-      create: (context) => CounterBloc(),
+      create: (context) => bloc,
       child: Scaffold(
         appBar: AppBar(
 
@@ -56,6 +57,7 @@ class MyHomePage extends StatelessWidget {
                 'You have pushed the button this many times:',
               ),
               BlocBuilder<CounterBloc, int>(
+                bloc: bloc,
                 builder: (context, state) {
                   return Text(
                     state.toString(),
@@ -70,6 +72,7 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         floatingActionButton: BlocListener<CounterBloc, int>(
+          bloc: bloc,
           listener: (context, state) {
             if (state == 10) {
               Scaffold.of(context).showBottomSheet(
@@ -92,7 +95,7 @@ class MyHomePage extends StatelessWidget {
           },
           child: FloatingActionButton(
             onPressed: () {
-              BlocProvider.of<CounterBloc>(context).add(
+              bloc.add(
                   CounterIncrementEvent());
             },
             tooltip: 'Increment',
